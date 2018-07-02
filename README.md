@@ -111,3 +111,15 @@ outputs:
 ```
 
 > 将fields中对应的字段写入ClickHouse
+
+### Tips
+
+在写入ClickHouse之前，Date和DateTime类型的字段需要转换为指定格式的字符串。
+
+- Date
+
+    `yyyy-MM-dd`
+
+- DateTime
+
+    `yyyy-MM-dd HH:mm:ss`

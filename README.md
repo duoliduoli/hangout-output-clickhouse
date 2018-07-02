@@ -15,7 +15,7 @@
 | [bulk_size](#bulk_size-list) | int | no | 1000 |
 | [database](#database-string) | string | yes | - |
 | [fields](#fields-list) | list | yes | - |
-| [format](#format-string) | string | no | Values |
+| [format](#format-string) | string | no | TabSeparated |
 | [host](#host-string) | string | yes | - |
 | [replace_include_fields](#replace_include_fields-list) | list | no | - |
 | [replace_exclude_fields](#replace_exclude_fields-list) | list | no | - |

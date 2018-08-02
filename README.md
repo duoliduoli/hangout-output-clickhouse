@@ -37,7 +37,7 @@ table fields， 必须和Hangout清洗后的字段保持一致
 
 数据插入格式[ClickHouse Format Introduction](https://clickhouse.yandex/docs/en/formats/)
 
-当前支持`Values`、`JSONEachRow`以及`TabSeparated`
+当前支持`Values`（已弃用）、`JSONEachRow`以及`TabSeparated`
 
 [JDBC Format Performance TEST](./docs/jdbc_format_performance.md)
 
@@ -71,7 +71,7 @@ outputs:
         bulk_size: 500
 ```
 
-> 将fields中对应的字段写入ClickHouse
+> 使用`Tabseparated`(default)将fields中对应的字段写入ClickHouse
 
 ```
 outputs:
@@ -84,26 +84,12 @@ outputs:
         table: apm_netdiagno
         bulk_size: 500
 ```
-> 使用`JSONEachRow`将数据写入ClickHouse，使用时务必保证清洗后的数据没有多余的字段
+> 使用`JSONEachRow`将数据写入ClickHouse，使用时务必保证清洗后的数据没有多余的字段且与表结构对应。使用`JSONEachRow`则不需要配置`fields`参数。
 
-```
-outputs:
-    - com.sina.bip.hangout.outputs.Clickhouse:
-        host: clickhouse.bip.sina.com.cn:8123
-        format: TabSeparated
-        username: user
-        password: passwd
-        database: apm
-        table: apm_netdiagno
-        fields: ['_device_id', '_ping_small', '_domain', '_traceroute', '_ping_big', 'date', 'ts', '_snet']
-        bulk_size: 500
-```
-
-> 将fields中对应的字段写入ClickHouse
 
 ### Tips
 
-在写入ClickHouse之前，Date和DateTime类型的字段需要转换为指定格式的字符串。
+在写入ClickHouse之前，Date和DateTime类型的字段需要转换为指定格式的**字符串**。
 
 - Date
 

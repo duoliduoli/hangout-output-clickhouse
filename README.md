@@ -17,15 +17,13 @@
 | [fields](#fields-list) | list | yes | - |
 | [format](#format-string) | string | no | TabSeparated |
 | [host](#host-string) | string | yes | - |
-| [replace_include_fields](#replace_include_fields-list) | list | no | - |
-| [replace_exclude_fields](#replace_exclude_fields-list) | list | no | - |
 | [table](#table-string) | string | yes | - |
 | [username](#username-string) | string | yes | - |
 | [password](#password-string) | string | yes | - |
 
 ##### bulk_size [string]
 
-批次写入量，默认为1000
+批次写入量，默认为1000, **当且仅当input数据条数大于bulk_size才会触发写入操作**
 
 ##### database [string]
 
@@ -37,23 +35,15 @@ table fields， 必须和Hangout清洗后的字段保持一致
 
 ##### format [string]
 
-数据插入格式[Format Introduction](https://clickhouse.yandex/docs/en/formats/)
+数据插入格式[ClickHouse Format Introduction](https://clickhouse.yandex/docs/en/formats/)
 
 当前支持`Values`、`JSONEachRow`以及`TabSeparated`
 
-[Format Performance TEST](./docs/jdbc_format.md)
+[JDBC Format Performance TEST](./docs/jdbc_format_performance.md)
 
 ##### host [string]
 
 ClickHouse cluster host
-
-##### replace_include_fields [list]
-
-需要执行替换'字符操作的字段列表
-
-##### replace_exclude_fields [list]
-
-不需要执行替换'字符操作的字段列表
 
 ##### table [string]
 
@@ -78,11 +68,10 @@ outputs:
         database: apm
         table: apm_netdiagno
         fields: ['_device_id', '_ping_small', '_domain', '_traceroute', '_ping_big', 'date', 'ts', '_snet']
-        replace_include_fields: ['_ping_big']
         bulk_size: 500
 ```
 
-> 将fields中对应的字段写入ClickHouse，且对`_ping_big`字段中的单引号进行转义
+> 将fields中对应的字段写入ClickHouse
 
 ```
 outputs:

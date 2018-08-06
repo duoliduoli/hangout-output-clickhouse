@@ -89,7 +89,7 @@ outputs:
 
 ### Tips
 
-在写入ClickHouse之前，Date和DateTime类型的字段需要转换为指定格式的**字符串**。
+在写入ClickHouse之前，Date和DateTime类型的字段需要转换为指定格式。
 
 - Date
 
@@ -97,4 +97,5 @@ outputs:
 
 - DateTime
 
-    `yyyy-MM-dd HH:mm:ss`
+    - `yyyy-MM-dd HH:mm:ss`
+    - `UNIX` 例如：1533535518

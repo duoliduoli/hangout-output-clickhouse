@@ -8,10 +8,7 @@ import ru.yandex.clickhouse.ClickHouseConnectionImpl;
 import ru.yandex.clickhouse.settings.ClickHouseProperties;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Deprecated
 /*
@@ -161,7 +158,7 @@ public class Values implements FormatParse {
         return init;
     }
 
-    public void bulkInsert(List<Map> events) throws Exception {
+    public void bulkInsert(Vector<Map> events) throws Exception {
 
         StringBuilder wholeSql = makeUpSql(events);
         try {

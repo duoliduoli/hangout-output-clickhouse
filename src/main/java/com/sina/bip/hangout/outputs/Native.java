@@ -130,7 +130,7 @@ public class Native implements FormatParse {
         return init;
     }
 
-    public void bulkInsert(List<Map> events) throws Exception {
+    public void bulkInsert(Vector<Map> events) throws Exception {
 
         PreparedStatement statement = this.conn.prepareStatement(this.initSql());
 

@@ -6,6 +6,9 @@ import com.ctrip.ops.sysdev.baseplugin.BaseOutput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /**
  * Created by RickyHuo on 2017/09/23.
@@ -19,7 +22,7 @@ public class Clickhouse extends BaseOutput {
 
     private int bulkNum = 0;
     private int bulkSize;
-    private List<Map> events;
+    private Vector<Map> events;
     private FormatParse formatParse;
 
     public Clickhouse(Map config) {
@@ -28,6 +31,7 @@ public class Clickhouse extends BaseOutput {
 
     protected void prepare() {
 
+        // default format
         String format = "TabSeparated";
         if (this.config.containsKey("format")) {
             format = (String) this.config.get("format");
@@ -54,7 +58,26 @@ public class Clickhouse extends BaseOutput {
         }
 
         this.formatParse.prepare();
-        this.events = new ArrayList<>();
+        this.events = new Vector<>();
+
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    formatParse.bulkInsert(events);
+                    log.info("Force to write to ClickHouse");
+                    events.clear();
+                } catch (Exception e) {
+                    log.info("Failed to force to write to ClickHouse");
+                    log.error(e);
+                }
+            }
+        };
+        Timer timer = new Timer();
+        long intervalPeriod = 10 * 1000;
+        timer.scheduleAtFixedRate(task, 10000, intervalPeriod);
+
         if (this.config.containsKey("bulk_size")) {
             this.bulkSize = (Integer) this.config.get("bulk_size");
         } else {
